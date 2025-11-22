@@ -24,6 +24,7 @@ function isValidUrl(url) {
   }
 }
 
+// Health check endpoint
 app.get('/healthz', (req, res) => {
   res.status(200).json({
     ok: true,
@@ -33,13 +34,14 @@ app.get('/healthz', (req, res) => {
   });
 });
 
+// Create a new short link
 app.post('/api/links', async (req, res) => {
   try {
     const { url, customCode } = req.body;
 
     if (!url || !isValidUrl(url)) {
-      return res.status(400).json({ 
-        error: 'Invalid URL format. Must start with http:// or https://' 
+      return res.status(400).json({
+        error: 'Invalid URL format. Must start with http:// or https://'
       });
     }
 
@@ -47,8 +49,8 @@ app.post('/api/links', async (req, res) => {
 
     if (customCode) {
       if (!CODE_REGEX.test(customCode)) {
-        return res.status(400).json({ 
-          error: 'Custom code must be 6-8 alphanumeric characters' 
+        return res.status(400).json({
+          error: 'Custom code must be 6-8 alphanumeric characters'
         });
       }
 
@@ -57,8 +59,8 @@ app.post('/api/links', async (req, res) => {
       });
 
       if (existing) {
-        return res.status(409).json({ 
-          error: 'Short code already exists. Please choose another.' 
+        return res.status(409).json({
+          error: 'Short code already exists. Please choose another.'
         });
       }
 
@@ -85,6 +87,7 @@ app.post('/api/links', async (req, res) => {
   }
 });
 
+// Get all links
 app.get('/api/links', async (req, res) => {
   try {
     const links = await prisma.url.findMany({
@@ -109,6 +112,7 @@ app.get('/api/links', async (req, res) => {
   }
 });
 
+// Get one link by short code
 app.get('/api/links/:code', async (req, res) => {
   try {
     const { code } = req.params;
@@ -138,6 +142,7 @@ app.get('/api/links/:code', async (req, res) => {
   }
 });
 
+// Delete a short link by code
 app.delete('/api/links/:code', async (req, res) => {
   try {
     const { code } = req.params;
@@ -154,8 +159,8 @@ app.delete('/api/links/:code', async (req, res) => {
       where: { shortCode: code }
     });
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: 'Link deleted successfully'
     });
   } catch (error) {
@@ -164,6 +169,7 @@ app.delete('/api/links/:code', async (req, res) => {
   }
 });
 
+// Redirect endpoint for short link
 app.get('/:code', async (req, res) => {
   try {
     const { code } = req.params;
@@ -187,7 +193,7 @@ app.get('/:code', async (req, res) => {
 
     await prisma.url.update({
       where: { shortCode: code },
-      data: { 
+      data: {
         clicks: { increment: 1 },
         lastClicked: new Date()
       }
@@ -200,12 +206,18 @@ app.get('/:code', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 TinyLink Server running on ${BASE_URL}`);
-  console.log(`📊 Health check: ${BASE_URL}/healthz`);
-});
+// Local server only: listen
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 TinyLink Server running on ${BASE_URL}`);
+    console.log(`📊 Health check: ${BASE_URL}/healthz`);
+  });
 
-process.on('SIGINT', async () => {
-  await prisma.$disconnect();
-  process.exit(0);
-});
+  process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+  });
+}
+
+// Export for Vercel serverless deployment
+module.exports = app;
