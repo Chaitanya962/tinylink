@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Label, Input, Button, ErrorBox, Success } from '../styles/AddLinkForm.styles';
 
-const API_URL = 'https://tinylink-backend-ln7vyxhod-chaitanyas-projects-e41e8888.vercel.app/';
+const API_URL = 'https://tinylink-backend-bp539pif5-chaitanyas-projects-e41e8888.vercel.app/';
 
 function AddLinkForm({ onLinkAdded }) {
   const [url, setUrl] = useState('');
