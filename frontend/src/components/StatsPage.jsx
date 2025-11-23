@@ -15,7 +15,7 @@ function StatsPage() {
   const fetchStats = async () => {
     try {
       setLoading(true);
-      const resp = await fetch(`${API_URL}/api/links/${code}`);
+      const resp = await fetch(`${API_URL}api/links/${code}`);
       const data = await resp.json();
       if (!data.success) throw new Error(data.error || "Not found");
       setLink(data.link);
