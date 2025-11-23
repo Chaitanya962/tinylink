@@ -10,10 +10,10 @@ datasource db {
 model Url {
   id          Int       @id @default(autoincrement())
   shortCode   String    @unique @db.VarChar(8)
-  originalUrl String    @db.Text
+  originalUrl String
   clicks      Int       @default(0)
   lastClicked DateTime?
   createdAt   DateTime  @default(now())
-  
+
   @@index([shortCode])
 }
