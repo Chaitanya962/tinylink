@@ -24,7 +24,7 @@ function AddLinkForm({ onLinkAdded }) {
   // ------------------------------
 
   try {
-    const response = await fetch(`${API_URL}/api/links`, {
+    const response = await fetch(`${API_URL}api/links`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url: fixedUrl, customCode: customCode || undefined })
