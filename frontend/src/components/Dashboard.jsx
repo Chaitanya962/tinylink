@@ -15,7 +15,7 @@ function Dashboard() {
   const fetchLinks = async () => {
     try {
       setLoading(true);
-      const resp = await fetch(`${API_URL}/api/links`);
+      const resp = await fetch(`${API_URL}api/links`);
       const data = await resp.json();
       setLinks(data.links || []);
       setError('');
@@ -30,7 +30,7 @@ function Dashboard() {
   const handleLinkAdded = () => fetchLinks();
   const handleDelete = async code => {
     if (!window.confirm('Delete this link?')) return;
-    await fetch(`${API_URL}/api/links/${code}`, { method: 'DELETE' });
+    await fetch(`${API_URL}api/links/${code}`, { method: 'DELETE' });
     fetchLinks();
   };
 
