@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Page, Card, StatsGrid, StatCard, Label, Input, Button, Error } from '../styles/StatsPage.styles';
 
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://tinylink-backend-ln7vyxhod-chaitanyas-projects-e41e8888.vercel.app/';
 
 function StatsPage() {
   const { code } = useParams();
