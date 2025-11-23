@@ -3,7 +3,7 @@ import { Container, SectionHeader, FlexRow } from '../styles/Dashboard.styles';
 import AddLinkForm from './AddLinkForm';
 import LinkTable from './LinkTable';
 
-const API_URL = 'https://tinylink-backend-ln7vyxhod-chaitanyas-projects-e41e8888.vercel.app/';
+const API_URL = 'https://tinylink-backend-bp539pif5-chaitanyas-projects-e41e8888.vercel.app/';
 
 function Dashboard() {
   const [links, setLinks] = useState([]);
